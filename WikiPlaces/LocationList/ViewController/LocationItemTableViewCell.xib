@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="127" id="KGk-i7-Jjw" customClass="LocationItemTableViewCell" customModule="WikiPlaces" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="424" height="127"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="424" height="127"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oVd-CJ-Z23">
+                        <rect key="frame" x="20" y="0.0" width="384" height="127"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6VN-zG-B2r">
+                                <rect key="frame" x="166.33333333333334" y="51.666666666666664" width="51.333333333333343" height="23.999999999999993"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6VN-zG-B2r" firstAttribute="centerX" secondItem="oVd-CJ-Z23" secondAttribute="centerX" id="8Ec-xr-BTF"/>
+                            <constraint firstItem="6VN-zG-B2r" firstAttribute="centerY" secondItem="oVd-CJ-Z23" secondAttribute="centerY" id="vb4-Wj-XMb"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="oVd-CJ-Z23" secondAttribute="bottom" id="4VX-vD-Slf"/>
+                    <constraint firstAttribute="trailing" secondItem="oVd-CJ-Z23" secondAttribute="trailing" constant="20" symbolic="YES" id="Ueq-dj-rXG"/>
+                    <constraint firstItem="oVd-CJ-Z23" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" symbolic="YES" id="pFe-an-hjC"/>
+                    <constraint firstItem="oVd-CJ-Z23" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="tB9-ZM-TLh"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="titleLabel" destination="6VN-zG-B2r" id="7nt-Jk-551"/>
+                <outlet property="titleView" destination="oVd-CJ-Z23" id="JmV-cl-BvJ"/>
+            </connections>
+            <point key="canvasLocation" x="218.32061068702288" y="39.7887323943662"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

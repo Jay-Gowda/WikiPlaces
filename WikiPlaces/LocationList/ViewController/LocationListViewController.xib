@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LocationListViewController" customModule="WikiPlaces" customModuleProvider="target">
+            <connections>
+                <outlet property="customLocationTextField" destination="W01-K3-Txv" id="XDh-al-qGF"/>
+                <outlet property="tableView" destination="xql-VE-Kpl" id="3Lb-fb-Ck6"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="xql-VE-Kpl">
+                    <rect key="frame" x="0.0" y="135" width="393" height="683"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="IeM-CR-vVE"/>
+                        <outlet property="delegate" destination="-1" id="94u-PR-5Lm"/>
+                    </connections>
+                </tableView>
+                <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Z5d-3L-vPH">
+                    <rect key="frame" x="20" y="79" width="353" height="36"/>
+                    <subviews>
+                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Custom Location" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W01-K3-Txv">
+                            <rect key="frame" x="0.0" y="0.0" width="267.33333333333331" height="36"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eNh-ou-Gfj">
+                            <rect key="frame" x="287.33333333333331" y="0.0" width="65.666666666666686" height="36"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="filled" title="Open"/>
+                            <connections>
+                                <action selector="openLocationButtonAction:" destination="-1" eventType="touchUpInside" id="BED-sM-3TP"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="36" id="g3o-pw-cIt"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Z5d-3L-vPH" secondAttribute="trailing" constant="20" id="0uS-8a-7pp"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="xql-VE-Kpl" secondAttribute="trailing" id="6Fh-3R-Ggn"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="xql-VE-Kpl" secondAttribute="bottom" id="ETs-5W-N11"/>
+                <constraint firstItem="xql-VE-Kpl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="K8o-bN-VKS"/>
+                <constraint firstItem="Z5d-3L-vPH" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="P0x-cl-33O"/>
+                <constraint firstItem="xql-VE-Kpl" firstAttribute="top" secondItem="Z5d-3L-vPH" secondAttribute="bottom" constant="20" id="ccv-Fa-1We"/>
+                <constraint firstItem="Z5d-3L-vPH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="sLR-yM-d8U"/>
+            </constraints>
+            <point key="canvasLocation" x="119.84732824427481" y="20.422535211267608"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
