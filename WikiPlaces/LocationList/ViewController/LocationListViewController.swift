@@ -17,6 +17,8 @@ class LocationListViewController: UIViewController {
     let refreshControl = UIRefreshControl()
     
     
+    ///  Init of Location listing screen
+    /// - Parameter viewModel: LocationListViewModel which requires Network layer dependency for API calls
     init(viewModel: LocationListViewProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -40,6 +42,8 @@ class LocationListViewController: UIViewController {
         tableView.addSubview(refreshControl)
         bindViewModel()
     }
+    
+    /// Subscription for combine to fetch events from ViewMode
     func bindViewModel(){
         vmSubscripton = viewModel.uiPublisher
             .receive(on: DispatchQueue.main)

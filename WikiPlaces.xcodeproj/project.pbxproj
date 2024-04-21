@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AED7BEDB2BD54AC000F3534B /* ApiHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED7BEDA2BD54AC000F3534B /* ApiHelpers.swift */; };
 		AEFAC9632BD5381700B2CC68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFAC9622BD5381700B2CC68 /* AppDelegate.swift */; };
 		AEFAC9652BD5381700B2CC68 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFAC9642BD5381700B2CC68 /* SceneDelegate.swift */; };
 		AEFAC96C2BD5381A00B2CC68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AEFAC96B2BD5381A00B2CC68 /* Assets.xcassets */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AED7BEDA2BD54AC000F3534B /* ApiHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiHelpers.swift; sourceTree = "<group>"; };
 		AEFAC95F2BD5381700B2CC68 /* WikiPlaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiPlaces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEFAC9622BD5381700B2CC68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AEFAC9642BD5381700B2CC68 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				AEFAC9A12BD53A2500B2CC68 /* WebService.swift */,
+				AED7BEDA2BD54AC000F3534B /* ApiHelpers.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -319,6 +322,7 @@
 			files = (
 				AEFAC9A42BD53A2500B2CC68 /* LocationItemTableViewCell.swift in Sources */,
 				AEFAC9A92BD53A2500B2CC68 /* WebService.swift in Sources */,
+				AED7BEDB2BD54AC000F3534B /* ApiHelpers.swift in Sources */,
 				AEFAC9632BD5381700B2CC68 /* AppDelegate.swift in Sources */,
 				AEFAC9AB2BD53A5500B2CC68 /* Helpers.swift in Sources */,
 				AEFAC9A32BD53A2500B2CC68 /* Locations.swift in Sources */,

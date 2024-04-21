@@ -9,13 +9,15 @@ import Foundation
 import UIKit
 import Combine
 
+
+/// Enum for async events from viewMode to ViewController
 enum LocationListUIPublishType {
     case refreshList
     case enterValidString
     case showError(String)
-    
 }
 
+/// Protocol for interaction between Location list view's ViewController and ViewModel
 protocol LocationListViewProtocol {
     var listOfLocations:[Location]{get}
     var numberOfLocationsToDisplay:Int{get}
@@ -29,6 +31,9 @@ protocol LocationListViewProtocol {
 
 
 class LocationListViewViewModel:LocationListViewProtocol {
+    init(networkService: WebServiceProtocol = WebService()) {
+        self.networkService = networkService
+    }
     var listOfLocations:[Location] = []
     var uiPublisher = PassthroughSubject<LocationListUIPublishType, Never>()
     
@@ -36,15 +41,7 @@ class LocationListViewViewModel:LocationListViewProtocol {
         return listOfLocations.count
     }
     
-    
     private let networkService: WebServiceProtocol
-    let title: String
-    
-    
-    init(networkService: WebServiceProtocol = WebService()) {
-        self.networkService = networkService
-        self.title = "Locations"
-    }
     
     func reloadData() {
         uiPublisher.send(.refreshList)
@@ -78,12 +75,10 @@ class LocationListViewViewModel:LocationListViewProtocol {
                     let filteredLocations = locations.locations?.filter { location in
                         return location.name != nil && location.lat != nil && location.long != nil
                     }
-                    
                     if let list = filteredLocations{
                         self.listOfLocations = list
                         self.reloadData()
                     }
-                    
                 case .failure(let dataLoadError):
                     uiPublisher.send(.showError(dataLoadError.value))
                 }
@@ -92,7 +87,7 @@ class LocationListViewViewModel:LocationListViewProtocol {
     }
     
     
-    func openWikiAppFor(location: String) {
+    private func openWikiAppFor(location: String) {
         let wikiDeepLinkUrl = "wikipedia://places?WMFArticleURL=https://en.wikipedia.org/"
         if let encodedLocation = location.addingPercentEncoding(withAllowedCharacters: .alphanumerics) {
             let urlString = wikiDeepLinkUrl + encodedLocation
@@ -108,7 +103,6 @@ class LocationListViewViewModel:LocationListViewProtocol {
                     self.uiPublisher.send(.showError("Error launching WikiPeda, try again in some time"))
                 }
             }
-            
         } else {
             self.uiPublisher.send(.showError("Error launching WikiPeda, try again in some time"))
         }
