@@ -48,11 +48,16 @@ class LocationListViewViewModel:LocationListViewProtocol {
     }
     
     func getLocationNameFor(indexPath:IndexPath) -> String{
+        guard indexPath.row < numberOfLocationsToDisplay else {
+            return ""
+        }
         return listOfLocations[indexPath.row].name ?? ""
     }
     func didSelectItem(indexPath:IndexPath){
         let locationName = getLocationNameFor(indexPath: indexPath)
-        openWikiAppFor(location: locationName)
+        if !locationName.isEmpty{
+            openWikiAppFor(location: locationName)
+        }
     }
     func userSelectedCustomLocation(locationText:String?){
         let trimmedString = locationText?.trimmingCharacters(in: .whitespaces)
@@ -72,18 +77,20 @@ class LocationListViewViewModel:LocationListViewProtocol {
                 guard let self = self else {return}
                 switch result {
                 case .success(let locations):
-                    let filteredLocations = locations.locations?.filter { location in
-                        return location.name != nil && location.lat != nil && location.long != nil
-                    }
-                    if let list = filteredLocations{
-                        self.listOfLocations = list
-                        self.reloadData()
-                    }
+                    self.addLocationList(locations: locations)
+                    self.reloadData()
                 case .failure(let dataLoadError):
                     uiPublisher.send(.showError(dataLoadError.value))
                 }
             }
         }
+    }
+    
+    func addLocationList(locations:Locations){
+        let filteredLocations = locations.locations?.filter { location in
+            return location.name != nil
+        }
+        self.listOfLocations = filteredLocations ?? []
     }
     
     
@@ -100,11 +107,11 @@ class LocationListViewViewModel:LocationListViewProtocol {
             UIApplication.shared.open(locationUrl) { [weak self] status in
                 guard let self = self else { return  }
                 if !status{
-                    self.uiPublisher.send(.showError("Error launching WikiPeda, try again in some time"))
+                    self.uiPublisher.send(.showError("Error launching WikiPedia, try again in some time"))
                 }
             }
         } else {
-            self.uiPublisher.send(.showError("Error launching WikiPeda, try again in some time"))
+            self.uiPublisher.send(.showError("Error launching WikiPedia, try again in some time"))
         }
     }
 }

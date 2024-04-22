@@ -10,7 +10,7 @@ import Combine
 
 class LocationListViewController: UIViewController {
     let viewModel: LocationListViewProtocol
-    var vmSubscripton:AnyCancellable?
+    var vmSubscription:AnyCancellable?
     
     @IBOutlet weak var customLocationTextField: UITextField!
     @IBOutlet weak var tableView: UITableView!
@@ -45,7 +45,7 @@ class LocationListViewController: UIViewController {
     
     /// Subscription for combine to fetch events from ViewMode
     func bindViewModel(){
-        vmSubscripton = viewModel.uiPublisher
+        vmSubscription = viewModel.uiPublisher
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] task in
                 guard let self = self else{return}

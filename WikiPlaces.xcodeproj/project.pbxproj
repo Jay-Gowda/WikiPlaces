@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		AED7BEDB2BD54AC000F3534B /* ApiHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED7BEDA2BD54AC000F3534B /* ApiHelpers.swift */; };
+		AED7BEDD2BD54F1D00F3534B /* LocationListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED7BEDC2BD54F1D00F3534B /* LocationListViewModelTests.swift */; };
+		AED7BEE22BD556D700F3534B /* NetworkLayerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AED7BEE12BD556D700F3534B /* NetworkLayerTests.swift */; };
+		AED7BEE42BD66ED900F3534B /* locations.json in Resources */ = {isa = PBXBuildFile; fileRef = AED7BEE32BD66ED900F3534B /* locations.json */; };
 		AEFAC9632BD5381700B2CC68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFAC9622BD5381700B2CC68 /* AppDelegate.swift */; };
 		AEFAC9652BD5381700B2CC68 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFAC9642BD5381700B2CC68 /* SceneDelegate.swift */; };
 		AEFAC96C2BD5381A00B2CC68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AEFAC96B2BD5381A00B2CC68 /* Assets.xcassets */; };
@@ -44,6 +47,9 @@
 
 /* Begin PBXFileReference section */
 		AED7BEDA2BD54AC000F3534B /* ApiHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiHelpers.swift; sourceTree = "<group>"; };
+		AED7BEDC2BD54F1D00F3534B /* LocationListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationListViewModelTests.swift; sourceTree = "<group>"; };
+		AED7BEE12BD556D700F3534B /* NetworkLayerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkLayerTests.swift; sourceTree = "<group>"; };
+		AED7BEE32BD66ED900F3534B /* locations.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = locations.json; sourceTree = "<group>"; };
 		AEFAC95F2BD5381700B2CC68 /* WikiPlaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WikiPlaces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEFAC9622BD5381700B2CC68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AEFAC9642BD5381700B2CC68 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -90,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AED7BEE52BD66EE400F3534B /* MockJSON */ = {
+			isa = PBXGroup;
+			children = (
+				AED7BEE32BD66ED900F3534B /* locations.json */,
+			);
+			path = MockJSON;
+			sourceTree = "<group>";
+		};
 		AEFAC9562BD5381700B2CC68 = {
 			isa = PBXGroup;
 			children = (
@@ -128,7 +142,10 @@
 		AEFAC9782BD5381A00B2CC68 /* WikiPlacesTests */ = {
 			isa = PBXGroup;
 			children = (
+				AED7BEE52BD66EE400F3534B /* MockJSON */,
 				AEFAC9792BD5381A00B2CC68 /* WikiPlacesTests.swift */,
+				AED7BEDC2BD54F1D00F3534B /* LocationListViewModelTests.swift */,
+				AED7BEE12BD556D700F3534B /* NetworkLayerTests.swift */,
 			);
 			path = WikiPlacesTests;
 			sourceTree = "<group>";
@@ -303,6 +320,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AED7BEE42BD66ED900F3534B /* locations.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,7 +354,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AED7BEDD2BD54F1D00F3534B /* LocationListViewModelTests.swift in Sources */,
 				AEFAC97A2BD5381A00B2CC68 /* WikiPlacesTests.swift in Sources */,
+				AED7BEE22BD556D700F3534B /* NetworkLayerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
