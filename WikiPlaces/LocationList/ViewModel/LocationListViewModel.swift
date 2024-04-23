@@ -31,7 +31,7 @@ protocol LocationListViewProtocol {
 
 
 class LocationListViewViewModel:LocationListViewProtocol {
-    init(networkService: WebServiceProtocol = WebService()) {
+    init(networkService: WebServiceProtocol = WebService(urlSession: .shared)) {
         self.networkService = networkService
     }
     var listOfLocations:[Location] = []

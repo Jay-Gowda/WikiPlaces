@@ -10,7 +10,7 @@ import XCTest
 
 final class LocationListViewModelTests: XCTestCase {
 
-    let locationVM = LocationListViewViewModel(networkService: WebService())
+    let locationVM = LocationListViewViewModel(networkService: WebService(urlSession: .shared))
 
     func test_DefaultState_LocationListView(){
         let sut = load_LocationListVC_sut()
@@ -71,7 +71,7 @@ final class LocationListViewModelTests: XCTestCase {
     }
     
     private func load_LocationListVC_sut() -> LocationListViewController{
-        let viewModel = LocationListViewViewModel(networkService: WebService())
+        let viewModel = LocationListViewViewModel(networkService: WebService(urlSession: .shared))
         let sut = LocationListViewController(viewModel: viewModel)
         
         return sut

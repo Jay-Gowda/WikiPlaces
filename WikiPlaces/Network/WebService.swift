@@ -15,10 +15,12 @@ protocol WebServiceProtocol {
 
 
 class WebService: WebServiceProtocol {
-    let urlSession: URLSession = .shared
+    let urlSession: URLSession
     let decoder: JSONDecoder = JSONDecoder()
     
-    
+    init(urlSession: URLSession) {
+        self.urlSession = urlSession
+    }
     func request<T: Decodable>(urlData: APIRoute,
                                type: T.Type,
                                completion: @escaping (Result<T, ApiError>) -> Void) {

@@ -8,44 +8,81 @@
 import XCTest
 @testable import WikiPlaces
 
-//final class NetworkLayerTests: XCTestCase {
-//    var mockSession: URLSession!
-//    let validResponse = HTTPURLResponse(url: URL(string: "https://something.com")!, statusCode: 200, httpVersion: nil, headerFields: nil)
-//    let invalidResponse = HTTPURLResponse(url: URL(string: "https://something.com")!, statusCode: 400, httpVersion: nil, headerFields: nil)
-//    var networkService: WebService!
-//    
-//    override func setUp() {
-//        super.setUp()
-//        setupURLProtocolMock()
-//        networkService = RequestHandler(urlSession: mockSession)
-//    }
-//    
-//    override func tearDown() {
-//        super.tearDown()
-//        URLProtocolMock.mockURLs = [:]
-//    }
-//    
-//    func testThatNetworkServiceCorrectlyHandlesValidResponse() {
-//        
-//        let urlWithValidData = "https://raw.githubusercontent.com/abnamrocoesd/assignment-ios/main/locations.json"
-//        let validData = JSONDataReader.getDataFromJSONFile(with: "locations")
-//        
-//        URLProtocolMock.mockURLs = [
-//            URL(string: urlWithValidData): (nil, validData, validResponse)
-//        ]
-//        
-//        let expectation = XCTestExpectation(description: "Successful JSON to model conversion while loading valid data from API")
-//        
-//        networkService.request(type: Locations.self, route: .getLocations) { result in
-//            if case .success = result {
-//                // No-op. If we reached here, that means we passed the test
-//            } else {
-//                XCTFail("Test failed. Expected to get the valid data without any error. Failed due to unexpected result")
-//            }
-//            expectation.fulfill()
-//        }
-//        
-//        wait(for: [expectation], timeout: 1.0)
-//    }
-//
-//}
+
+
+
+
+////asdasd
+
+
+
+
+final class NetworkLayerTests: XCTestCase {
+    
+    var urlSession: URLSession!
+    var httpClient: WebServiceProtocol!
+    
+    override func setUp() {
+        let config = URLSessionConfiguration.ephemeral
+        config.protocolClasses = [MockURLProtocol.self]
+        urlSession = URLSession(configuration: config)
+        
+        httpClient = WebService(urlSession: urlSession)
+    }
+    
+    func test_GetCat_Success() throws {
+        let dummy = URL(string: "https://raw.githubusercontent.com/abnamrocoesd/assignment-ios/main/locations.json")!
+        let response = HTTPURLResponse(url: dummy,
+                                       statusCode: 200,
+                                       httpVersion: nil,
+                                       headerFields: ["Content-Type": "application/json"])!
+        
+        let mockString =
+             """
+                {
+            "locations":
+            [
+            {
+            "name": "Bengaluru",
+            "lat": 52.3547498,
+            "long": 4.8339215
+            },
+            {
+            "name": "Mumbai",
+            "lat": 19.0823998,
+            "long": 72.8111468
+            },
+            {
+            "name": "Copenhagen",
+            "lat": 55.6713442,
+            "long": 12.523785
+            },
+            {
+            "lat": 40.4380638,
+            "long": -3.7495758
+            }
+            ]
+            }
+            """
+        
+        let mockData: Data = Data(mockString.utf8)
+        
+        MockURLProtocol.requestHandler = { request in
+            return (response, mockData)
+        }
+        
+        let expectation = XCTestExpectation(description: "response")
+        httpClient.request(urlData: .getLocations, type: Locations.self) { result in
+            switch result {
+            case .success(let locationsRes):
+                XCTAssertEqual(locationsRes.locations?.first?.name, "Bengaluru")
+                
+                expectation.fulfill()
+            case .failure(let failure):
+                XCTAssertThrowsError(failure)
+                
+            }
+        }
+        wait(for: [expectation], timeout: 2)
+    }
+}
