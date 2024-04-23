@@ -12,6 +12,8 @@ class LocationListViewController: UIViewController {
     let viewModel: LocationListViewProtocol
     var vmSubscription:AnyCancellable?
     
+    @IBOutlet weak var latitudeTextField: UITextField!
+    @IBOutlet weak var longitudeTextField: UITextField!
     @IBOutlet weak var customLocationTextField: UITextField!
     @IBOutlet weak var tableView: UITableView!
     let refreshControl = UIRefreshControl()
@@ -32,15 +34,17 @@ class LocationListViewController: UIViewController {
         super.viewDidLoad()
         initiateUiElements()
         viewModel.loadLocations()
-
+        
     }
     
     func initiateUiElements(){
         LocationItemTableViewCell.registerNib(tableView: self.tableView)
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(self.refreshTableView(_:)), for: .valueChanged)
         tableView.addSubview(refreshControl)
         bindViewModel()
+        latitudeTextField.placeholder = NSLocalizedString("Latitude", comment: "LatitudeTextField")
+        longitudeTextField.placeholder = NSLocalizedString("Longitude", comment: "LongitudeTextField")
     }
     
     /// Subscription for combine to fetch events from ViewMode
@@ -61,15 +65,18 @@ class LocationListViewController: UIViewController {
             })
     }
     @IBAction func openLocationButtonAction(_ sender: Any) {
-        viewModel.userSelectedCustomLocation(locationText: customLocationTextField.text)
+        guard let latitude = latitudeTextField.text, let longitude = longitudeTextField.text else{
+            return
+        }
+        if latitude.isValidDecimalNumber() && longitude.isValidDecimalNumber(){
+            viewModel.userSelectedCustomLocation(latitude: latitude, longitude: longitude)
+        }
     }
     
     
-    @objc func refresh(_ sender: AnyObject) {
-        // Code to refresh table view
+    @objc func refreshTableView(_ sender: AnyObject) {
         viewModel.loadLocations()
     }
-    
 }
 
 extension LocationListViewController:UITableViewDelegate, UITableViewDataSource{
@@ -85,7 +92,6 @@ extension LocationListViewController:UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.didSelectItem(indexPath: indexPath)
     }
-    
-    
 }
+
 

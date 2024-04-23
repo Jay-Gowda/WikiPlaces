@@ -1,3 +1,14 @@
+//
+//  MockResponse.swift
+//  WikiPlacesTests
+//
+//  Created by Jayanth Gowda on 23/04/24.
+//
+
+import Foundation
+
+struct MockResponse {
+    static let valid = """
 {
     "locations":
     [
@@ -22,3 +33,16 @@
         }
     ]
 }
+"""
+}
+
+let emptyLocations = {
+    let valid = """
+{
+    "locations":
+    [
+    ]
+}
+"""
+}
+

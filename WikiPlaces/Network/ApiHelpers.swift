@@ -23,8 +23,7 @@ enum APIRoute {
         return []
     }
     
-    /// Method to construct URLrequest from the enum
-    /// - Returns: URLRequest
+    
     func asRequest() -> URLRequest {
         guard let url = url else {
             preconditionFailure("Missing URL for route: \(self)")

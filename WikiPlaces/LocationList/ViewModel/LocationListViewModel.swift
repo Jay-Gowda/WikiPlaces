@@ -23,7 +23,7 @@ protocol LocationListViewProtocol {
     var numberOfLocationsToDisplay:Int{get}
     func getLocationNameFor(indexPath:IndexPath) -> String
     func didSelectItem(indexPath:IndexPath)
-    func userSelectedCustomLocation(locationText:String?)
+    func userSelectedCustomLocation(latitude:String, longitude:String)
     func loadLocations()
     
     var uiPublisher:PassthroughSubject<LocationListUIPublishType, Never> {get}
@@ -36,12 +36,11 @@ class LocationListViewViewModel:LocationListViewProtocol {
     }
     var listOfLocations:[Location] = []
     var uiPublisher = PassthroughSubject<LocationListUIPublishType, Never>()
-    
+    private let networkService: WebServiceProtocol
     var numberOfLocationsToDisplay:Int{
         return listOfLocations.count
     }
     
-    private let networkService: WebServiceProtocol
     
     func reloadData() {
         uiPublisher.send(.refreshList)
@@ -53,31 +52,38 @@ class LocationListViewViewModel:LocationListViewProtocol {
         }
         return listOfLocations[indexPath.row].name ?? ""
     }
-    func didSelectItem(indexPath:IndexPath){
-        let locationName = getLocationNameFor(indexPath: indexPath)
-        if !locationName.isEmpty{
-            openWikiAppFor(location: locationName)
+    
+    func getLocationCoordinatesFor(indexPath:IndexPath) -> (latitude:Double?, longitude:Double?){
+        guard indexPath.row < numberOfLocationsToDisplay else {
+            return (nil,nil)
         }
+        let location = listOfLocations[indexPath.row]
+        return (location.lat, location.long)
+        
     }
-    func userSelectedCustomLocation(locationText:String?){
-        let trimmedString = locationText?.trimmingCharacters(in: .whitespaces)
-        if let locationString = trimmedString, !locationString.isEmpty{
-            openWikiAppFor(location: locationString)
-        }else{
-            uiPublisher.send(.enterValidString)
+    func didSelectItem(indexPath:IndexPath){
+        let coOrdinates = getLocationCoordinatesFor(indexPath: indexPath)
+        guard let latitude = coOrdinates.latitude, let longitude = coOrdinates.longitude else { return }
+        openWikiAppFor(latitude: latitude, longitude: longitude)
+        
+    }
+    func userSelectedCustomLocation(latitude:String, 
+                                    longitude:String){
+        if let latitude = Double(latitude), let longitude = Double(longitude){
+            openWikiAppFor(latitude: latitude, longitude: longitude)
         }
     }
     
+    
     func loadLocations() {
-        networkService.request(urlData: .getLocations, type: Locations.self) { [weak self] result in
-            
+        networkService.request(urlData: .getLocations, 
+                               type: Locations.self) { [weak self] result in
             guard let self else { return }
-            
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else {return}
                 switch result {
                 case .success(let locations):
-                    self.addLocationList(locations: locations)
+                    self.addLocationItemsToList(locations: locations)
                     self.reloadData()
                 case .failure(let dataLoadError):
                     uiPublisher.send(.showError(dataLoadError.value))
@@ -86,7 +92,7 @@ class LocationListViewViewModel:LocationListViewProtocol {
         }
     }
     
-    func addLocationList(locations:Locations){
+    func addLocationItemsToList(locations:Locations){
         let filteredLocations = locations.locations?.filter { location in
             return location.name != nil
         }
@@ -94,24 +100,23 @@ class LocationListViewViewModel:LocationListViewProtocol {
     }
     
     
-    private func openWikiAppFor(location: String) {
-        let wikiDeepLinkUrl = "wikipedia://places?WMFArticleURL=https://en.wikipedia.org/"
-        if let encodedLocation = location.addingPercentEncoding(withAllowedCharacters: .alphanumerics) {
-            let urlString = wikiDeepLinkUrl + encodedLocation
-            let locationUrl = URL(string: urlString)
-            
-            guard let locationUrl else {
-                self.uiPublisher.send(.showError("Enter URL is not valid \n \(urlString). Try again"))
-                return
+    private func openWikiAppFor( latitude:Double, 
+                                 longitude:Double) {
+        let wikiDeepLinkUrl = "wikipedia://customLocation?"
+        
+        let locationCoOrds = "&lat=\(latitude)&long=\(longitude)"
+        let urlString = wikiDeepLinkUrl + locationCoOrds
+        let locationUrl = URL(string: urlString)
+        
+        guard let locationUrl else {
+            self.uiPublisher.send(.showError("Enter URL is not valid \n \(urlString). Try again"))
+            return
+        }
+        UIApplication.shared.open(locationUrl) { [weak self] status in
+            guard let self = self else { return  }
+            if !status{
+                self.uiPublisher.send(.showError("Error launching WikiPedia, try again in some time"))
             }
-            UIApplication.shared.open(locationUrl) { [weak self] status in
-                guard let self = self else { return  }
-                if !status{
-                    self.uiPublisher.send(.showError("Error launching WikiPedia, try again in some time"))
-                }
-            }
-        } else {
-            self.uiPublisher.send(.showError("Error launching WikiPedia, try again in some time"))
         }
     }
 }
