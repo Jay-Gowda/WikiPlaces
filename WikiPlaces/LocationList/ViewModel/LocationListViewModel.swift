@@ -22,7 +22,7 @@ protocol LocationListViewProtocol {
     var listOfLocations:[Location]{get}
     var numberOfLocationsToDisplay:Int{get}
     func getLocationNameFor(indexPath:IndexPath) -> String
-    func didSelectItem(indexPath:IndexPath)
+    func userDidSelectRowAt(indexPath:IndexPath)
     func userSelectedCustomLocation(latitude:String, longitude:String)
     func loadLocations()
     
@@ -40,19 +40,12 @@ class LocationListViewViewModel:LocationListViewProtocol {
     var numberOfLocationsToDisplay:Int{
         return listOfLocations.count
     }
-    
-    
-    func reloadData() {
-        uiPublisher.send(.refreshList)
-    }
-    
     func getLocationNameFor(indexPath:IndexPath) -> String{
         guard indexPath.row < numberOfLocationsToDisplay else {
             return ""
         }
         return listOfLocations[indexPath.row].name ?? ""
     }
-    
     func getLocationCoordinatesFor(indexPath:IndexPath) -> (latitude:Double?, longitude:Double?){
         guard indexPath.row < numberOfLocationsToDisplay else {
             return (nil,nil)
@@ -61,13 +54,18 @@ class LocationListViewViewModel:LocationListViewProtocol {
         return (location.lat, location.long)
         
     }
-    func didSelectItem(indexPath:IndexPath){
+    
+    func reloadData() {
+        uiPublisher.send(.refreshList)
+    }
+    
+    func userDidSelectRowAt(indexPath:IndexPath){
         let coOrdinates = getLocationCoordinatesFor(indexPath: indexPath)
         guard let latitude = coOrdinates.latitude, let longitude = coOrdinates.longitude else { return }
         openWikiAppFor(latitude: latitude, longitude: longitude)
         
     }
-    func userSelectedCustomLocation(latitude:String, 
+    func userSelectedCustomLocation(latitude:String,
                                     longitude:String){
         if let latitude = Double(latitude), let longitude = Double(longitude){
             openWikiAppFor(latitude: latitude, longitude: longitude)
@@ -76,17 +74,20 @@ class LocationListViewViewModel:LocationListViewProtocol {
     
     
     func loadLocations() {
-        networkService.request(urlData: .getLocations, 
-                               type: Locations.self) { [weak self] result in
-            guard let self else { return }
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else {return}
-                switch result {
-                case .success(let locations):
-                    self.addLocationItemsToList(locations: locations)
-                    self.reloadData()
-                case .failure(let dataLoadError):
-                    uiPublisher.send(.showError(dataLoadError.value))
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let self = self else {return}
+            networkService.request(urlData: .getLocations,
+                                   type: Locations.self) { [weak self] result in
+                guard let self else { return }
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else {return}
+                    switch result {
+                    case .success(let locations):
+                        self.addLocationItemsToList(locations: locations)
+                        self.reloadData()
+                    case .failure(let dataLoadError):
+                        uiPublisher.send(.showError(dataLoadError.value))
+                    }
                 }
             }
         }
@@ -100,7 +101,11 @@ class LocationListViewViewModel:LocationListViewProtocol {
     }
     
     
-    private func openWikiAppFor( latitude:Double, 
+    /// Navigate to the Wikipedia App with location coordinates
+    /// - Parameters:
+    ///   - latitude: Decimal value of the latitude coords
+    ///   - longitude: Decimal value of the longitude coords
+    private func openWikiAppFor( latitude:Double,
                                  longitude:Double) {
         let wikiDeepLinkUrl = "wikipedia://customLocation?"
         

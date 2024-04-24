@@ -21,6 +21,13 @@ extension String{
 
 
 extension UIViewController{
+    /// Alert: Display the alert dialogue window based on two types
+    /// Alert with action
+    /// Toast message which disappears in 2 seconds
+    /// - Parameters:
+    ///   - message: Message for the alert window
+    ///   - title: Optional(Title for the alert content)
+    ///   - actionRequired: Optional(Ok button for user to tap and terminate once he reads the message)
     func showAlert(message: String,
                    title: String = "",
                    actionRequired:Bool? = false) {

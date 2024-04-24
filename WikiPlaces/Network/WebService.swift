@@ -24,8 +24,6 @@ class WebService: WebServiceProtocol {
     func request<T: Decodable>(urlData: APIRoute,
                                type: T.Type,
                                completion: @escaping (Result<T, ApiError>) -> Void) {
-        
-        
         urlSession.dataTask(with: urlData.asRequest()) { [weak self] (data, response, error) in
             
             guard let self else { return }
@@ -37,8 +35,6 @@ class WebService: WebServiceProtocol {
                 completion(.failure(.noData))
                 return
             }
-            
-            // Consider only responses with 200 response code as valid responses from API
             if let statusCode = (response as? HTTPURLResponse)?.statusCode, statusCode != 200 {
                 completion(.failure(.systemError(String(statusCode))))
                 return

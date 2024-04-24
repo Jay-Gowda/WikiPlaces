@@ -13,6 +13,7 @@ class LocationListViewController: UIViewController {
     var vmSubscription:AnyCancellable?
     
     @IBOutlet weak var latitudeTextField: UITextField!
+    @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var longitudeTextField: UITextField!
     @IBOutlet weak var customLocationTextField: UITextField!
     @IBOutlet weak var tableView: UITableView!
@@ -29,12 +30,10 @@ class LocationListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         initiateUiElements()
-        viewModel.loadLocations()
-        
+        refreshTableView(self)
     }
     
     func initiateUiElements(){
@@ -47,7 +46,7 @@ class LocationListViewController: UIViewController {
         longitudeTextField.placeholder = NSLocalizedString("Longitude", comment: "LongitudeTextField")
     }
     
-    /// Subscription for combine to fetch events from ViewMode
+    /// Subscription of combine to fetch events from ViewMode
     func bindViewModel(){
         vmSubscription = viewModel.uiPublisher
             .receive(on: DispatchQueue.main)
@@ -57,10 +56,12 @@ class LocationListViewController: UIViewController {
                 case .refreshList:
                     self.tableView.reloadData()
                     refreshControl.endRefreshing()
+                    self.showActivityIndicator(status: false)
                 case .enterValidString:
                     self.showAlert(message: "Please enter a search location")
                 case .showError(let message):
                     self.showAlert(message: message)
+                    self.showActivityIndicator(status: false)
                 }
             })
     }
@@ -70,12 +71,19 @@ class LocationListViewController: UIViewController {
         }
         if latitude.isValidDecimalNumber() && longitude.isValidDecimalNumber(){
             viewModel.userSelectedCustomLocation(latitude: latitude, longitude: longitude)
+        }else{
+            showAlert(message: "Please enter valid decimal value for Latitude and Location values")
         }
     }
     
     
     @objc func refreshTableView(_ sender: AnyObject) {
         viewModel.loadLocations()
+        self.showActivityIndicator(status: true)
+    }
+    
+    func showActivityIndicator(status:Bool){
+        loadingView.isHidden = !status
     }
 }
 
@@ -90,7 +98,7 @@ extension LocationListViewController:UITableViewDelegate, UITableViewDataSource{
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        viewModel.didSelectItem(indexPath: indexPath)
+        viewModel.userDidSelectRowAt(indexPath: indexPath)
     }
 }
 

@@ -39,7 +39,7 @@ final class NetworkLayerTests: XCTestCase {
                            type: Locations.self) { result in
             switch result {
             case .success(let locationsRes):
-                XCTAssertEqual(locationsRes.locations?.first?.name, "Bengaluru")
+                XCTAssertEqual(locationsRes.locations?.first?.name, "Amsterdam")
                 
                 expectation.fulfill()
             case .failure(let failure):
